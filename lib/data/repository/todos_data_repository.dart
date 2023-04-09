@@ -9,22 +9,16 @@ class TodosDataRepository extends TodosRepository {
 
   @override
   Future<void> addTodo(TodoEntity todo) {
-    //return appDb.addTodoFromEntity(todo);
     return _dataUnit.addTodo(todo);
   }
 
   @override
   Future<List<TodoEntity>> getCompleted(bool isCompleted) async {
-    //return (await appDb.getCompleted(isCompleted))
-    //.map((e) => Mapper.todoToTodoEntity(e))
-    //    .toList();
     return _dataUnit.getCompleted(isCompleted);
   }
 
   @override
-  Future<void> updateCompleted(int id, bool isCompleted) {
-   // return appDb.updateCompleted(id, isCompleted);
-    return Future(1 as FutureOr<int> Function());
+  Future<void> updateCompleted(TodoEntity todo) {
+    return _dataUnit.updateCompleted(todo.copyWith(isCompleted: !todo.isCompleted));
   }
-
 }

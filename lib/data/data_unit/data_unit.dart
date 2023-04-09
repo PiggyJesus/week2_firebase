@@ -9,8 +9,7 @@ class DataUnit {
 
   Future<void> addTodo(TodoEntity todo) async {
     try {
-      await collection.add({
-        'id': (await collection.get()).size,
+      await collection.doc((await collection.get()).size.toString()).set({
         'name': todo.name,
         'isCompleted': todo.isCompleted,
         'finishTime': todo.finishTime,
@@ -30,7 +29,7 @@ class DataUnit {
       final jsonTodos =
           await collection.where('isCompleted', isEqualTo: isCompleted).get();
       for (var element in jsonTodos.docs) {
-        todos.add(Mapper.jsonToTodoEntity(element.data()));
+        todos.add(Mapper.jsonToTodoEntity(element));
       }
       return todos;
     } on FirebaseException catch (e) {
@@ -38,6 +37,22 @@ class DataUnit {
         print("Firebase get error: ${e.code} ${e.message}");
       }
       return [];
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<void> updateCompleted(TodoEntity todo) async {
+    try {
+      await collection.doc(todo.id.toString()).set({
+        'name': todo.name,
+        'isCompleted': todo.isCompleted,
+        'finishTime': todo.finishTime,
+      });
+    } on FirebaseException catch (e) {
+      if (kDebugMode) {
+        print("Firebase add error: ${e.code} ${e.message}");
+      }
     } catch (e) {
       throw Exception(e.toString());
     }
