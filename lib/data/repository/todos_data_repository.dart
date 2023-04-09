@@ -1,7 +1,5 @@
 import 'dart:async';
 
-//import 'package:week2_firebase/data/mapper/mapper.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:week2_firebase/data/data_unit/data_unit.dart';
 import 'package:week2_firebase/domain/entities/todo_entity.dart';
 import 'package:week2_firebase/domain/repository/todos_repository.dart';
@@ -20,7 +18,7 @@ class TodosDataRepository extends TodosRepository {
     //return (await appDb.getCompleted(isCompleted))
     //.map((e) => Mapper.todoToTodoEntity(e))
     //    .toList();
-    return [];
+    return _dataUnit.getCompleted(isCompleted);
   }
 
   @override
